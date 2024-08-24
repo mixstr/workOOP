@@ -4,11 +4,11 @@ require_once "vendor/autoload.php";
 
 use app\core\Router;
 
-register_shutdown_function(function(){
+/*register_shutdown_function(function(){
     if (error_get_last()) {
       var_export(error_get_last());
     }
-  });
+  });*/
 
 spl_autoload_register(function ($class) {
     $file = __DIR__ . "/" . str_replace("\\", "/", "{$class}.php");
