@@ -4,6 +4,7 @@ namespace app\service;
 
 use Doctrine\ORM\EntityManager;
 use app\entities\EmployeeEntity;
+use app\core\Router;
 use DateTime;
 
 class EmployeeService
@@ -17,48 +18,43 @@ class EmployeeService
         $this->entityManager = callEntityManager();
     }
 
-    public function selectAll()
+    public function selectAll(array $request): void
     {
         $employees = $this->entityManager->getRepository('app\entities\EmployeeEntity')->findAll();
-        echo ("selectAll method executed");
-        print_r ($employees);
+        $this->toAnswer($employees);
     }
 
-    public function selectById(int $id)
+    public function selectById(int $id): void
     {
         $employees = $this->entityManager->find('app\entities\EmployeeEntity', $id);
-        echo ("selectById method executed");
-        print_r ($employees);
+        $this->toAnswer($employees);
     }
 
-    public function selectByFio(string $fio)
+    public function selectByFio(string $fio): void
     {
         $employees = $this->entityManager->getRepository('app\entities\EmployeeEntity')->findBy(array('fio' => $fio));
-        echo ("selectByFio method executed");
-        print_r ($employees);
+        $this->toAnswer($employees);
     }
 
-    public function selectByHire(DateTime $hire_date)
+    public function selectByHire(DateTime $hire_date): void
     {
         $employees = $this->entityManager->getRepository('app\entities\EmployeeEntity')->findBy(array('hire_date' => $hire_date));
-        echo ("selectByHire method executed");
-        print_r ($employees);
+        $this->toAnswer($employees);
     }
 
-    public function selectByTermination(DateTime $termination_date) 
+    public function selectByTermination(DateTime $termination_date): void
     {
         $employees = $this->entityManager->getRepository('app\entities\EmployeeEntity')->findBy(array('termination_date' => $termination_date));
-        echo ("selectByTermination method executed");
-        print_r ($employees);
+        $this->toAnswer($employees);
     }
 
-    public function insert($id, $fio, $hire_date, $termination_date)
+    public function insert(int $id, string $fio, DateTime $hire_date, ?DateTime $termination_date): void
     {
         $employeeEntity = new EmployeeEntity();
 
-        $employeeEntity->setId($id);
-        $employeeEntity->setFio($fio);
-        $employeeEntity->setHireDate($hire_date);
+        $employeeEntity->setId($id)
+        ->setFio($fio)
+        ->setHireDate($hire_date);
 
         foreach ($termination_date as $value) {
             $employeeEntity->setTerminationDate($value);
@@ -67,11 +63,10 @@ class EmployeeService
         $this->entityManager->persist($employeeEntity);
         $this->entityManager->flush();
 
-        echo ("Insert method executed");
-        print_r ($employeeEntity);
+        Router::createResponse(true, null);
     }
 
-    public function update($id, $fio, $hire_date, $termination_date)
+    public function update(int $id, ?string $fio, ?DateTime $hire_date, ?DateTime $termination_date): void
     {
         $employeeEntity = $this->entityManager->find('app\entities\EmployeeEntity', $id);
         $employeeEntity->setFio($fio);
@@ -86,17 +81,39 @@ class EmployeeService
 
         $this->entityManager->flush();
 
-        echo ("Update method executed");
-        print_r ($employeeEntity);
+        Router::createResponse(true, null);
     }
-    public function delete($id)
+    public function delete(int $id): void
     {
         $employeeEntity = $this->entityManager->find('app\entities\EmployeeEntity', $id);
         $this->entityManager->remove($employeeEntity);
         $this->entityManager->flush();
 
-        echo ("Delete method executed");
-        print_r ($employeeEntity);
+        Router::createResponse(true, null);
+    }
+
+    public function toAnswer(mixed $objects): void{
+        $answer = [];
+        if (is_object($objects) === true){
+            $array = [
+                "id" => $objects->getId(),
+                "fio" => $objects->getFio(),
+                "hire_date" => $objects->getHireDate(),
+                "termination_date" => $objects->getTerminationDate()
+            ];
+            Router::createResponse(true, $array);
+        }else {
+            foreach ($objects as $object){
+                $array = [
+                    "id" => $object->getId(),
+                    "fio" => $object->getFio(),
+                    "hire_date" => $object->getHireDate(),
+                    "termination_date" => $object->getTerminationDate()
+                ];
+                array_push($answer, $array);
+                }
+                Router::createResponse(true, $answer);
+        }
     }
 }
 

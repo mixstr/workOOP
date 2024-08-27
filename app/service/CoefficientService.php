@@ -4,6 +4,7 @@ namespace app\service;
 
 use Doctrine\ORM\EntityManager;
 use app\entities\CoefficientEntity;
+use app\core\Router;
 
 class CoefficientService
 {
@@ -16,41 +17,37 @@ class CoefficientService
         $this->entityManager = callEntityManager();
     }
 
-    public function selectAll()
+    public function selectAll(array $request): void
     {
         $coefficients = $this->entityManager->getRepository('app\entities\CoefficientEntity')->findAll();
-        echo ("selectAll method executed");
-        print_r ($coefficients);
+        $this->toAnswer($coefficients);
     }
 
-    public function selectById($id)
+    public function selectById(int $id): void
     {
         $coefficients = $this->entityManager->find('app\entities\CoefficientEntity', $id);
-        echo ("selectById method executed");
-        print_r ($coefficients);
+        $this->toAnswer($coefficients);
     }
 
-    public function selectByEmployee($employee_id)
+    public function selectByEmployee(int $employee_id): void
     {
         $coefficients = $this->entityManager->getRepository('app\entities\CoefficientEntity')->findBy(array('employee_id' => $employee_id));
-        echo ("selectByEmployee method executed");
-        print_r ($coefficients);
+        $this->toAnswer($coefficients);
     }
 
-    public function selectByMonth($month_id)
+    public function selectByMonth(int $month_id): void
     {
         $coefficients = $this->entityManager->getRepository('app\entities\CoefficientEntity')->findBy(array('month_id' => $month_id));
-        echo ("selectByMonth method executed");
-        print_r ($coefficients);
+        $this->toAnswer($coefficients);
     }
 
-    public function insert($id, $employee_id, $month_id, $coefficient)
+    public function insert(int $id, int $employee_id, int $month_id, ?float $coefficient): void
     {
         $coefficientEntity = new CoefficientEntity();
 
-        $coefficientEntity->setId($id);
-        $coefficientEntity->setEmployee($employee_id);
-        $coefficientEntity->setMonth($month_id);
+        $coefficientEntity->setId($id)
+        ->setEmployee($employee_id)
+        ->setMonth($month_id);
 
         foreach ($coefficient as $value) {
             $coefficientEntity->setCoefficient($value);
@@ -59,10 +56,10 @@ class CoefficientService
         $this->entityManager->persist($coefficientEntity);
         $this->entityManager->flush();
 
-        print_r ("Insert method executed") . ($coefficientEntity);
+        Router::createResponse(true, null);
     }
 
-    public function update($id, $employee_id, $month_id, $coefficient)
+    public function update(int $id, ?int $employee_id, ?int $month_id, ?float $coefficient): void
     {
         $coefficientEntity = $this->entityManager->find('app\entities\CoefficientEntity', $id);
         foreach ($employee_id as $value) {
@@ -78,17 +75,40 @@ class CoefficientService
         }
 
         $this->entityManager->flush();
-        echo ("Update method executed");
-        print_r ($coefficientEntity);
+        
+        Router::createResponse(true, null);
     }
-    public function delete($id)
+    public function delete(int $id): void
     {
         $coefficientEntity = $this->entityManager->find('app\entities\CoefficientEntity', $id);
         $this->entityManager->remove($coefficientEntity);
         $this->entityManager->flush();
 
-        print_r ("Delete method executed") . ($coefficientEntity);
+        Router::createResponse(true, null);
+    }
+
+    public function toAnswer(mixed $objects): void
+    {
+        $answer = [];
+        if (is_object($objects) === true){
+            $array = [
+                "id" => $objects->getId(),
+                "employee_id" => $objects->getEmployee(),
+                "month_id" => $objects->getMonth(),
+                "coefficient" => $objects->getCoefficient()
+            ];
+            Router::createResponse(true, $array);
+        }else {
+            foreach ($objects as $object){
+                $array = [
+                    "id" => $object->getId(),
+                    "employee_id" => $object->getEmployee(),
+                    "month_id" => $object->getMonth(),
+                    "coefficient" => $object->getCoefficient()
+                ];
+                array_push($answer, $array);
+                }
+                Router::createResponse(true, $answer);
+        }
     }
 }
-
-

@@ -21,30 +21,30 @@ class CoefficientController
         $this->coefficientService = new CoefficientService();
     }
 
-    public function selectAll()
+    public function selectAll(array $request): void
     {
-        $this->coefficientService->selectAll();
+        $this->coefficientService->selectAll($request);
     }
 
-    public function selectById($id)
+    public function selectById(array $request): void
     {
         $id = $this->validator->validateInt('id');
         $this->coefficientService->selectById($id);
     }
     
-    public function selectByEmployee($employee_id)
+    public function selectByEmployee(array $request): void
     {
         $employee_id = $this->validator->validateInt('employee_id');
         $this->coefficientService->selectByEmployee($employee_id);
     }
     
-    public function selectByMonth($month_id)
+    public function selectByMonth(array $request): void
     {
         $month_id = $this->validator->validateInt('month_id');
         $this->coefficientService->selectByMonth($month_id);
     }
 
-    public function insert($request)
+    public function insert(array $request): void
     {
         $id =  $this->validator->validateInt('id', 'int');
         $employee_id = $this->validator->validateInt('employee_id', 'int');
@@ -52,7 +52,7 @@ class CoefficientController
         $coefficient = $this->validator->validateParam('coefficient', 'float');
         $this->coefficientService->insert($id, $employee_id, $month_id, $coefficient);
     }
-    public function update($request)
+    public function update(array $request): void
     {
         $id =  $this->validator->validateInt('id', 'int');
         $employee_id = $this->validator->validateParam('employee_id', 'int');
@@ -61,7 +61,7 @@ class CoefficientController
         $this->coefficientService->update($id, $employee_id, $month_id, $coefficient);
     }
 
-    public function delete($request)
+    public function delete(array $request): void
     {
         $id = $this->validator->validateInt('id');
         $this->coefficientService->delete($id);

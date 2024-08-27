@@ -1,1 +1,0 @@
-UPDATE month SET name = :name, day = :day, month = :month, year = :year WHERE id = :id;

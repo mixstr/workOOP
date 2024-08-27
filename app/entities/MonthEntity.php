@@ -3,24 +3,25 @@
 namespace app\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity]
 #[ORM\Table(name: "month")]
 class MonthEntity {
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: Types::STRING)]
     private ?string $name = null;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $day = null;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $month = null;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $year = null;
 
     public function getId(): int
@@ -28,48 +29,53 @@ class MonthEntity {
         return $this->id;
     }
 
-    public function setId(?int $id): void
+    public function setId(int $id)
     {
         $this->id = $id;
+        return $this;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): void
+    public function setName(?string $name)
     {
         $this->name = $name;
+        return $this;
     }
 
-    public function getDay(): int
+    public function getDay(): ?int
     {
         return $this->day;
     }
 
-    public function setDay(?int $day): void
+    public function setDay(?int $day)
     {
         $this->day = $day;
+        return $this;
     }
 
-    public function getMonth(): int
+    public function getMonth(): ?int
     {
         return $this->month;
     }
 
-    public function setMonth(?int $month): void
+    public function setMonth(?int $month)
     {
         $this->month = $month;
+        return $this;
     }
 
-    public function getYear(): int
+    public function getYear(): ?int
     {
         return $this->year;
     }
 
-    public function setYear(?int $year): void
+    public function setYear(?int $year)
     {
         $this->year = $year;
+        return $this;
     }
 }

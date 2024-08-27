@@ -21,24 +21,24 @@ class EmployeeController
         $this->employeeService = new EmployeeService();
     }
 
-    public function selectAll()
+    public function selectAll(array $request): array
     {
-        $this->employeeService->selectAll();
+        $this->employeeService->selectAll($request);
     }
 
-    public function selectById($id)
+    public function selectById(array $request): void
     {
         $id = $this->validator->validateInt('id');
         $this->employeeService->selectById($id);
     }
 
-    public function selectByFio()
+    public function selectByFio(array $request): void
     {
         $fio = $this->validator->validateString('fio');
         $this->employeeService->selectByFio($fio);
     }
     
-    public function selectByHire($hire_date)
+    public function selectByHire(array $request): void
     {
         $hire_date = $this->validator->validateParam('hire_date', 'date');
         foreach ($hire_date as $date)
@@ -47,7 +47,7 @@ class EmployeeController
         }
     }
     
-    public function selectByTermination($termination_date)
+    public function selectByTermination(array $request): void
     {
         $termination_date = $this->validator->validateParam('termination_date', 'date');
         foreach ($termination_date as $date)
@@ -56,7 +56,7 @@ class EmployeeController
         }
     }
 
-    public function insert($request)
+    public function insert(array $request): void
     {
         $id =  $this->validator->validateInt('id');
         $fio = $this->validator->validateString('fio');
@@ -64,7 +64,7 @@ class EmployeeController
         $termination_date = $this->validator->validateParam('termination_date', 'date');
         $this->employeeService->insert($id, $fio, $hire_date, $termination_date);
     }
-    public function update($request)
+    public function update(array $request): void
     {
         $id =  $this->validator->validateInt('id');
         $fio = $this->validator->validateString('fio');
@@ -73,7 +73,7 @@ class EmployeeController
         $this->employeeService->update($id, $fio, $hire_date, $termination_date);
     }
 
-    public function delete($request)
+    public function delete(array $request): void
     {
         $id = $this->validator->validateInt('id');
         $this->employeeService->delete($id);

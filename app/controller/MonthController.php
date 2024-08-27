@@ -21,42 +21,42 @@ class MonthController
         $this->monthService = new MonthService();
     }
 
-    public function selectAll()
+    public function selectAll(array $request): void
     {
-        $this->monthService->selectAll();
+        $this->monthService->selectAll($request);
     }
 
-    public function selectById($id)
+    public function selectById(array $request): void
     {
         $id = $this->validator->validateInt('id');
         $this->monthService->selectById($id);
     }
     
-    public function selectByName($name)
+    public function selectByName(array $request): void
     {
         $name = $this->validator->validateString('name');
         $this->monthService->selectByName($name);
     }
 
-    public function selectByDay($day)
+    public function selectByDay(array $request): void
     {
         $day = $this->validator->validateInt('day');
         $this->monthService->selectByDay($day);
     }
     
-    public function selectByMonth($monthID)
+    public function selectByMonth(array $request): void
     {
         $monthID = $this->validator->validateInt('month');
         $this->monthService->selectByMonth($monthID);
     }
 
-    public function selectByYear($year)
+    public function selectByYear(array $request): void
     {
         $year = $this->validator->validateInt('year');
         $this->monthService->selectByYear($year);
     }
 
-    public function insert($request)
+    public function insert(array $request): void
     {
         $id =  $this->validator->validateInt('id', 'int');
         $name = $this->validator->validateParam('name', 'string');
@@ -65,7 +65,7 @@ class MonthController
         $year = $this->validator->validateParam('year', 'float');
         $this->monthService->insert($id, $name, $day, $month, $year);
     }
-    public function update($request)
+    public function update(array $request): void
     {
         $id =  $this->validator->validateInt('id', 'int');
         $name = $this->validator->validateParam('name', 'string');
@@ -75,7 +75,7 @@ class MonthController
         $this->monthService->update($id, $name, $day, $month, $year);
     }
 
-    public function delete($request)
+    public function delete(array $request): void
     {
         $id = $this->validator->validateInt('id');
         $this->monthService->delete($id);

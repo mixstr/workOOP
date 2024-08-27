@@ -15,7 +15,7 @@ class RequestValidator
         $this->format = $format;
     }
 
-    public function validateInt($key)
+    public function validateInt(string $key): int
     {
         if (isset($this->request[$key])) {
             $value = $this->request[$key];
@@ -28,7 +28,7 @@ class RequestValidator
             die();
     }
 
-    public function validateFloat($key)
+    public function validateFloat(string $key): float
     {
         if (isset($this->request[$key])) {
             $value = $this->request[$key];
@@ -41,7 +41,7 @@ class RequestValidator
             die();
     }
 
-    public function validateString($key)
+    public function validateString(string $key): string
     {
         if (isset($this->request[$key])) {
             return $_REQUEST[$key];
@@ -51,7 +51,7 @@ class RequestValidator
             die();
     }
 
-    public function validateDate($key)
+    public function validateDate(string $key): DateTime
     {
         if (isset($this->request[$key])) {
             $dateTime = DateTime::createFromFormat($this->format, $_REQUEST[$key]);
@@ -65,7 +65,7 @@ class RequestValidator
             die();
     }
 
-    public function validateParam($key, $type): array
+    public function validateParam(string $key,string $type): array
     {
         if (array_key_exists($key, $_REQUEST)) {
     

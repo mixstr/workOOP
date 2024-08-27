@@ -1,1 +1,0 @@
-DELETE FROM coefficient WHERE month_id = :id;
