@@ -8,5 +8,5 @@ $connectionParams = array(
         "password" => "123456",
         "port" => 5432
     );
-
+    
 define('DATADB',$connectionParams, TRUE);

@@ -2,6 +2,7 @@
 
 namespace app\entities;
 
+use app\dto\EmployeeDto;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
@@ -12,7 +13,8 @@ class EmployeeEntity
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::INTEGER)]
-    private ?int $id = null;
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private int $id;
 
     #[ORM\Column(type: Types::STRING)]
     private ?string $fio = null;
@@ -26,12 +28,6 @@ class EmployeeEntity
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setId(int $newId)
-    {
-        $this->id = $newId;
-        return $this;
     }
 
     public function getFio(): string
@@ -65,5 +61,10 @@ class EmployeeEntity
     {
         $this->termination_date = $termination_date;
         return $this;
+    }
+
+    public function getEntityDtoObject(): EmployeeDto
+    {
+        return new EmployeeDto($this->id, $this->fio, $this->hire_date, $this->termination_date);
     }
 }

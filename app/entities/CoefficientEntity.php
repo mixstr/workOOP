@@ -2,6 +2,7 @@
 
 namespace app\entities;
 
+use app\dto\CoefficientDto;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 
@@ -11,7 +12,8 @@ class CoefficientEntity
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::INTEGER)]
-    private ?int $id = null;
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private int $id;
 
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $employee_id = null;
@@ -27,20 +29,14 @@ class CoefficientEntity
         return $this->id;
     }
 
-    public function setId(int $newId)
-    {
-        $this->id = $newId;
-        return $this;
-    }
-
     public function getEmployee(): string
     {
         return $this->employee_id;
     }
 
-    public function setEmployee(?int $newEmployeeId)
+    public function setEmployee(?int $newEmployee_id)
     {
-        $this->employee_id = $newEmployeeId;
+        $this->employee_id = $newEmployee_id;
         return $this;
     }
 
@@ -49,9 +45,9 @@ class CoefficientEntity
         return $this->month_id;
     }
 
-    public function setMonth(?int $newMonthId)
+    public function setMonth(?int $newMonth_id)
     {
-        $this->month_id = $newMonthId;
+        $this->month_id = $newMonth_id;
         return $this;
     }
 
@@ -64,5 +60,10 @@ class CoefficientEntity
     {
         $this->coefficient = $newCoefficient;
         return $this;
+    }
+
+    public function getEntityDtoObject(): CoefficientDto
+    {
+        return new CoefficientDto($this->id, $this->employee_id, $this->month_id, $this->coefficient);
     }
 }

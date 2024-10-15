@@ -2,15 +2,18 @@
 
 namespace app\Entities;
 
+use app\dto\MonthDto;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity]
 #[ORM\Table(name: "month")]
-class MonthEntity {
+class MonthEntity 
+{
     #[ORM\Id]
     #[ORM\Column(type: Types::INTEGER)]
-    private ?int $id = null;
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private int $id;
 
     #[ORM\Column(type: Types::STRING)]
     private ?string $name = null;
@@ -27,12 +30,6 @@ class MonthEntity {
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setId(int $id)
-    {
-        $this->id = $id;
-        return $this;
     }
 
     public function getName(): ?string
@@ -77,5 +74,10 @@ class MonthEntity {
     {
         $this->year = $year;
         return $this;
+    }
+
+    public function getEntityDtoObject(): MonthDto
+    {
+        return new MonthDto($this->id, $this->name, $this->day, $this->month, $this->year);
     }
 }

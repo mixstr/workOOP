@@ -58,21 +58,13 @@ class MonthController
 
     public function insert(array $request): void
     {
-        $id =  $this->validator->validateInt('id', 'int');
-        $name = $this->validator->validateParam('name', 'string');
-        $day = $this->validator->validateParam('day', 'int');
-        $month = $this->validator->validateParam('month', 'float');
-        $year = $this->validator->validateParam('year', 'float');
-        $this->monthService->insert($id, $name, $day, $month, $year);
+        $values = $this->validator->validateMonth($request, 'insert');
+        $this->monthService->insert($values);
     }
     public function update(array $request): void
     {
-        $id =  $this->validator->validateInt('id', 'int');
-        $name = $this->validator->validateParam('name', 'string');
-        $day = $this->validator->validateParam('day', 'int');
-        $month = $this->validator->validateParam('month', 'float');
-        $year = $this->validator->validateParam('year', 'float');
-        $this->monthService->update($id, $name, $day, $month, $year);
+        $values = $this->validator->validateMonth($request, 'update');
+        $this->monthService->update($values);
     }
 
     public function delete(array $request): void

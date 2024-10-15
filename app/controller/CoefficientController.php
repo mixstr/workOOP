@@ -34,31 +34,25 @@ class CoefficientController
     
     public function selectByEmployee(array $request): void
     {
-        $employee_id = $this->validator->validateInt('employee_id');
-        $this->coefficientService->selectByEmployee($employee_id);
+        $employeeId = $this->validator->validateInt('employeeId');
+        $this->coefficientService->selectByEmployee($employeeId);
     }
     
     public function selectByMonth(array $request): void
     {
-        $month_id = $this->validator->validateInt('month_id');
-        $this->coefficientService->selectByMonth($month_id);
+        $monthId = $this->validator->validateInt('monthId');
+        $this->coefficientService->selectByMonth($monthId);
     }
 
     public function insert(array $request): void
     {
-        $id =  $this->validator->validateInt('id', 'int');
-        $employee_id = $this->validator->validateInt('employee_id', 'int');
-        $month_id = $this->validator->validateInt('month_id', 'int');
-        $coefficient = $this->validator->validateParam('coefficient', 'float');
-        $this->coefficientService->insert($id, $employee_id, $month_id, $coefficient);
+        $values = $this->validator->validateController($request, 'insert');
+        $this->coefficientService->insert($values);
     }
     public function update(array $request): void
     {
-        $id =  $this->validator->validateInt('id', 'int');
-        $employee_id = $this->validator->validateParam('employee_id', 'int');
-        $month_id = $this->validator->validateParam('month_id', 'int');
-        $coefficient = $this->validator->validateParam('coefficient', 'float');
-        $this->coefficientService->update($id, $employee_id, $month_id, $coefficient);
+        $values = $this->validator->validateController($request, 'update');
+        $this->coefficientService->update($values);
     }
 
     public function delete(array $request): void
