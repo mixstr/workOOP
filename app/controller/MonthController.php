@@ -11,12 +11,10 @@ class MonthController
 {
     public $validator;
     private MonthService $monthService;
-    public EntityManager $entityManager;
 
     public function __construct()
     {
         require_once "bootstrap.php";
-        $this->entityManager = callEntityManager();
         $this->validator = new RequestValidator($_REQUEST);
         $this->monthService = new MonthService();
     }

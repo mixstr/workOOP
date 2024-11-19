@@ -22,72 +22,128 @@ class MonthService
 
     public function selectAll(array $request): void
     {
-        $months = $this->entityManager->getRepository('app\entities\MonthEntity')->findAll();
-        $this->validator->processEntity($months);
+        try {
+            $months = $this->entityManager->getRepository(MonthEntity::class)->findAll();
+            $this->validator->processEntity($months);
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
     }
 
     public function selectById(int $id): void
     {
-        $months = $this->entityManager->find('app\entities\MonthEntity', $id);
-        $this->validator->processEntity($months);
+        try {
+            $months = $this->entityManager->find(MonthEntity::class, $id);
+            $this->validator->processEntity($months);
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
     }
 
     public function selectByName(string $name): void
     {
-        $months = $this->entityManager->getRepository('app\entities\MonthEntity')->findBy(array('name' => $name));
-        $this->validator->processEntity($months);
+        try {
+            $months = $this->entityManager->getRepository(MonthEntity::class)->findBy(['name' => $name]);
+            $this->validator->processEntity($months);
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
     }
 
     public function selectByDay(int $day): void
     {
-        $months = $this->entityManager->getRepository('app\entities\MonthEntity')->findBy(array('day' => $day));
-        $this->validator->processEntity($months);
+        try {
+            $months = $this->entityManager->getRepository(MonthEntity::class)->findBy(['day' => $day]);
+            $this->validator->processEntity($months);
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
     }
 
     public function selectByMonth(int $monthID): void
     {
-        $months = $this->entityManager->getRepository('app\entities\MonthEntity')->findBy(array('month' => $monthID));
-        $this->validator->processEntity($months);
+        try {
+            $months = $this->entityManager->getRepository(MonthEntity::class)->findBy(['month' => $monthID]);
+            $this->validator->processEntity($months);
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
     }
 
     public function selectByYear(int $year): void
     {
-        $months = $this->entityManager->getRepository('app\entities\MonthEntity')->findBy(array('year' => $year));
-        $this->validator->processEntity($months);
+        try {
+            $months = $this->entityManager->getRepository(MonthEntity::class)->findBy(['year' => $year]);
+            $this->validator->processEntity($months);
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
     }
 
     public function insert(array $values): void
     {
-        $monthEntity = new MonthEntity();
-
-        $monthEntity->setName($values['name'])
-        ->setDay($values['day'])
-        ->setMonth($values['month'])
-        ->setYear($values['year']);
-
-        $this->entityManager->persist($monthEntity);
-        $this->entityManager->flush();
+        try {
+            $monthEntity = new MonthEntity();
+            $monthEntity->setName($values['name'])
+            ->setDay($values['day'])
+            ->setMonth($values['month'])
+            ->setYear($values['year']);
+    
+            $this->entityManager->persist($monthEntity);
+            $this->entityManager->flush();
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
 
         Router::createResponse(true, null);
     }
 
     public function update(array $values): void
     {
-        $monthEntity = $this->entityManager->find('app\entities\MonthEntity', $values['id']);
-        $monthEntity->setName($values['name'])
-        ->setDay($values['day'])
-        ->setMonth($values['month'])
-        ->setYear($values['year']);
+        try {
+            $monthEntity = $this->entityManager->find(MonthEntity::class, $values['id']);
+            if (!$monthEntity) {
+                throw new \Exception();
+            }
+            $monthEntity->setName($values['name'])
+            ->setDay($values['day'])
+            ->setMonth($values['month'])
+            ->setYear($values['year']);
+    
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
 
-        $this->entityManager->flush();
-        
         Router::createResponse(true, null);
     }
     public function delete(int $id): void
     {
-        $monthEntity = $this->entityManager->find('app\entities\MonthEntity', $id);
-        $this->entityManager->remove($monthEntity);
-        $this->entityManager->flush();
+        try {
+            $monthEntity = $this->entityManager->find(MonthEntity::class, $id);
+            if (!$monthEntity) {
+                throw new \Exception();
+            }
+            $this->entityManager->remove($monthEntity);
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
 
         Router::createResponse(true, null);
     }

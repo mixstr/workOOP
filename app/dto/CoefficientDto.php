@@ -5,14 +5,14 @@ namespace app\dto;
 class CoefficientDto
 {
     public ?int $id;
-    public int $employee_id;
-    public int $month_id;
+    public int $employeeId;
+    public int $monthId;
     public ?float $coefficient;
 
-    public function __construct(?int $id = null, int $employee_id, int $month_id, ?float $coefficient = null) {
+    public function __construct(?int $id = null, int $employeeId, int $monthId, ?float $coefficient = null) {
         $this->id = $id;
-        $this->employee_id = $employee_id;
-        $this->month_id = $month_id;
+        $this->employeeId = $employeeId;
+        $this->monthId = $monthId;
         $this->coefficient = $coefficient;
     }
 }

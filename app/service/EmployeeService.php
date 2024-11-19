@@ -22,64 +22,115 @@ class EmployeeService
 
     public function selectAll(array $request): void
     {
-        $employees = $this->entityManager->getRepository('app\entities\EmployeeEntity')->findAll();
-        $this->validator->processEntity($employees);
+        try {
+            $employees = $this->entityManager->getRepository(EmployeeEntity::class)->findAll();
+            $this->validator->processEntity($employees);
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
     }
 
     public function selectById(int $id): void
     {
-        $employees = $this->entityManager->find('app\entities\EmployeeEntity', $id);
-        $this->validator->processEntity($employees);
+        try {
+            $employees = $this->entityManager->find(EmployeeEntity::class, $id);
+            $this->validator->processEntity($employees);
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
     }
 
     public function selectByFio(string $fio): void
     {
-        $employees = $this->entityManager->getRepository('app\entities\EmployeeEntity')->findBy(array('fio' => $fio));
-        $this->validator->processEntity($employees);
+        try {
+            $employees = $this->entityManager->getRepository(EmployeeEntity::class)->findBy(['fio' => $fio]);
+            $this->validator->processEntity($employees);
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
     }
 
     public function selectByHire(DateTime $hireDate): void
     {
-        $employees = $this->entityManager->getRepository('app\entities\EmployeeEntity')->findBy(array('hireDate' => $hireDate));
-        $this->validator->processEntity($employees);
+        try {
+            $employees = $this->entityManager->getRepository(EmployeeEntity::class)->findBy(['hireDate' => $hireDate]);
+            $this->validator->processEntity($employees);
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
     }
 
     public function selectByTermination(DateTime $terminationDate): void
     {
-        $employees = $this->entityManager->getRepository('app\entities\EmployeeEntity')->findBy(array('terminationDate' => $terminationDate));
-        $this->validator->processEntity($employees);
+        try {
+            $employees = $this->entityManager->getRepository(EmployeeEntity::class)->findBy(['terminationDate' => $terminationDate]);
+            $this->validator->processEntity($employees);
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
     }
 
     public function insert(array $values): void
     {
-        $employeeEntity = new EmployeeEntity();
-
-        $employeeEntity->setFio($values['fio'])
-        ->setHireDate($values['hire_date'])
-        ->setTerminationDate($values['termination_date']);
-
-        $this->entityManager->persist($employeeEntity);
-        $this->entityManager->flush();
+        try {
+            $employeeEntity = new EmployeeEntity();
+            $employeeEntity->setFio($values['fio'])
+            ->setHireDate($values['hireDate'])
+            ->setTerminationDate($values['terminationDate']);
+    
+            $this->entityManager->persist($employeeEntity);
+            $this->entityManager->flush();
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
 
         Router::createResponse(true, null);
     }
 
     public function update(array $values): void
     {
-        $employeeEntity = $this->entityManager->find('app\entities\EmployeeEntity', $values['id']);
-        $employeeEntity->setFio($values['fio'])
-        ->setHireDate($values['hire_date'])
-        ->setTerminationDate($values['termination_date']);
-
-        $this->entityManager->flush();
+        try {
+            $employeeEntity = $this->entityManager->find(EmployeeEntity::class, $values['id']);
+            if (!$employeeEntity) {
+                throw new \Exception();
+            }
+            $employeeEntity->setFio($values['fio'])
+            ->setHireDate($values['hireDate'])
+            ->setTerminationDate($values['terminationDate']);
+    
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
 
         Router::createResponse(true, null);
     }
     public function delete(int $id): void
     {
-        $employeeEntity = $this->entityManager->find('app\entities\EmployeeEntity', $id);
-        $this->entityManager->remove($employeeEntity);
-        $this->entityManager->flush();
+        try {
+            $employeeEntity = $this->entityManager->find(EmployeeEntity::class, $id);
+            if (!$employeeEntity) {
+                throw new \Exception();
+            }
+            $this->entityManager->remove($employeeEntity);
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
 
         Router::createResponse(true, null);
     }

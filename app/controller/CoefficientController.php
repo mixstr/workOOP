@@ -11,12 +11,10 @@ class CoefficientController
 {
     public $validator;
     private CoefficientService $coefficientService;
-    public EntityManager $entityManager;
 
     public function __construct()
     {
         require_once "bootstrap.php";
-        $this->entityManager = callEntityManager();
         $this->validator = new RequestValidator($_REQUEST);
         $this->coefficientService = new CoefficientService();
     }

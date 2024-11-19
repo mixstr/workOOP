@@ -16,10 +16,10 @@ class CoefficientEntity
     private int $id;
 
     #[ORM\Column(type: Types::INTEGER)]
-    private ?int $employee_id = null;
+    private ?int $employeeId = null;
 
     #[ORM\Column(type: Types::INTEGER)]
-    private ?int $month_id = null;
+    private ?int $monthId = null;
 
     #[ORM\Column(type: Types::FLOAT)]
     private ?float $coefficient = null;
@@ -31,23 +31,23 @@ class CoefficientEntity
 
     public function getEmployee(): string
     {
-        return $this->employee_id;
+        return $this->employeeId;
     }
 
-    public function setEmployee(?int $newEmployee_id)
+    public function setEmployee(?int $newEmployeeId)
     {
-        $this->employee_id = $newEmployee_id;
+        $this->employeeId = $newEmployeeId;
         return $this;
     }
 
     public function getMonth(): string
     {
-        return $this->month_id;
+        return $this->monthId;
     }
 
-    public function setMonth(?int $newMonth_id)
+    public function setMonth(?int $newMonthId)
     {
-        $this->month_id = $newMonth_id;
+        $this->monthId = $newMonthId;
         return $this;
     }
 
@@ -64,6 +64,6 @@ class CoefficientEntity
 
     public function getEntityDtoObject(): CoefficientDto
     {
-        return new CoefficientDto($this->id, $this->employee_id, $this->month_id, $this->coefficient);
+        return new CoefficientDto($this->id, $this->employeeId, $this->monthId, $this->coefficient);
     }
 }

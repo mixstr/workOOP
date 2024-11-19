@@ -21,59 +21,104 @@ class CoefficientService
 
     public function selectAll(array $request): void
     {
-        $coefficients = $this->entityManager->getRepository('app\entities\CoefficientEntity')->findAll();
-        $this->validator->processEntity($coefficients);
+        try {
+            $coefficients = $this->entityManager->getRepository(CoefficientEntity::class)->findAll();
+            $this->validator->processEntity($coefficients);
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
     }
 
     public function selectById(int $id): void
     {
-        $coefficients = $this->entityManager->find('app\entities\CoefficientEntity', $id);
-        $this->validator->processEntity($coefficients);
+        try {
+            $coefficients = $this->entityManager->find(CoefficientEntity::class, $id);
+            $this->validator->processEntity($coefficients);
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
     }
 
     public function selectByEmployee(int $employeeId): void
     {
-        $coefficients = $this->entityManager->getRepository('app\entities\CoefficientEntity')->findBy(array('employeeId' => $employeeId));
-        $this->validator->processEntity($coefficients);
+        try {
+            $coefficients = $this->entityManager->getRepository(CoefficientEntity::class)->findBy(['employeeId' => $employeeId]);
+            $this->validator->processEntity($coefficients);
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
     }
 
     public function selectByMonth(int $monthId): void
     {
-        $coefficients = $this->entityManager->getRepository('app\entities\CoefficientEntity')->findBy(array('monthId' => $monthId));
-        $this->validator->processEntity($coefficients);
+        try {
+            $coefficients = $this->entityManager->getRepository(CoefficientEntity::class)->findBy(['monthId' => $monthId]);
+            $this->validator->processEntity($coefficients);
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
     }
 
     public function insert(array $values): void
     {
-        $coefficientEntity = new CoefficientEntity();
-
-        $coefficientEntity->setEmployee($values['employee_id'])
-        ->setMonth($values['month_id'])
+        try {
+            $coefficientEntity = new CoefficientEntity();
+            $coefficientEntity->setEmployee($values['employeeId'])
+        ->setMonth($values['monthId'])
         ->setCoefficient($values['coefficient']);
 
         $this->entityManager->persist($coefficientEntity);
         $this->entityManager->flush();
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
 
         Router::createResponse(true, null);
     }
 
     public function update(array $values): void
     {
-        $coefficientEntity = $this->entityManager->find('app\entities\CoefficientEntity', $values['id']);
-        
-        $coefficientEntity->setEmployee($values['employee_id'])
-        ->setMonth($values['month_id'])
-        ->setCoefficient($values['coefficient']);
+        try {
+            $coefficientEntity = $this->entityManager->find(CoefficientEntity::class, $values['id']);
+            if (!$coefficientEntity) {
+                throw new \Exception();
+            }
+            $coefficientEntity->setEmployee($values['employeeId'])
+            ->setMonth($values['monthId'])
+            ->setCoefficient($values['coefficient']);
+    
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
 
-        $this->entityManager->flush();
-        
         Router::createResponse(true, null);
     }
     public function delete(int $id): void
     {
-        $coefficientEntity = $this->entityManager->find('app\entities\CoefficientEntity', $id);
-        $this->entityManager->remove($coefficientEntity);
-        $this->entityManager->flush();
+        try {
+            $coefficientEntity = $this->entityManager->find(CoefficientEntity::class, $id);
+            if (!$coefficientEntity) {
+                throw new \Exception();
+            }
+            $this->entityManager->remove($coefficientEntity);
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        } catch (\Error $e) {
+            Router::createResponse(false, $e->getMessage());
+            die();
+        }
 
         Router::createResponse(true, null);
     }

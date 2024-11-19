@@ -20,10 +20,10 @@ class EmployeeEntity
     private ?string $fio = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?DateTime $hire_date = null;
+    private ?DateTime $hireDate = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?DateTime $termination_date = null;
+    private ?DateTime $terminationDate = null;
 
     public function getId(): int
     {
@@ -43,28 +43,28 @@ class EmployeeEntity
 
     public function getHireDate(): DateTime 
     {
-        return $this->hire_date;
+        return $this->hireDate;
     }
 
-    public function setHireDate(?DateTime $hire_date)
+    public function setHireDate(?DateTime $hireDate)
     {
-        $this->hire_date = $hire_date;
+        $this->hireDate = $hireDate;
         return $this;
     }
 
     public function getTerminationDate(): ?DateTime
     {
-        return $this->termination_date;
+        return $this->terminationDate;
     }
     
-    public function setTerminationDate(?DateTime $termination_date)
+    public function setTerminationDate(?DateTime $terminationDate)
     {
-        $this->termination_date = $termination_date;
+        $this->terminationDate = $terminationDate;
         return $this;
     }
 
     public function getEntityDtoObject(): EmployeeDto
     {
-        return new EmployeeDto($this->id, $this->fio, $this->hire_date, $this->termination_date);
+        return new EmployeeDto($this->id, $this->fio, $this->hireDate, $this->terminationDate);
     }
 }

@@ -11,12 +11,10 @@ class EmployeeController
 {
     public $validator;
     private EmployeeService $employeeService;
-    public EntityManager $entityManager;
 
     public function __construct()
     {
         require_once "bootstrap.php";
-        $this->entityManager = callEntityManager();
         $this->validator = new RequestValidator($_REQUEST);
         $this->employeeService = new EmployeeService();
     }
